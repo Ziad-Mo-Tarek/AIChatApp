@@ -38,6 +38,7 @@ struct OnboardingIntroView: View {
             }
             
         }
+        .toolbar(.hidden, for: .navigationBar)
         .padding(24)
     }
 }

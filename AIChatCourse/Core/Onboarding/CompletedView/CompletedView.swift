@@ -29,6 +29,7 @@ struct CompletedView: View {
         .safeAreaInset(edge: .bottom) {
             ctaButton
         }
+        .toolbar(.hidden, for: .navigationBar)
         .padding(24)
     }
     
@@ -61,6 +62,8 @@ struct CompletedView: View {
 }
 
 #Preview {
-    CompletedView()
-        .environment(AppState())
+    NavigationStack {
+        CompletedView()
+    }
+    .environment(AppState())
 }
