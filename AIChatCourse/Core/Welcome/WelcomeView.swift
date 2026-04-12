@@ -51,7 +51,7 @@ struct WelcomeView: View {
     private var ctaSection: some View {
         Group {
             NavigationLink {
-                CompletedView()
+                OnboardingIntroView()
             } label: {
                 Text("Get Started")
                     .callToActionButton()
