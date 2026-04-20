@@ -11,7 +11,7 @@ import Foundation
 struct AvatarModel: Hashable {
     let avatarId: String
     let name: String?
-    let characterOption: CategoryOption?
+    let characterOption: CharacterOption?
     let characterAction: CharacterAction?
     let characterLocation: CharacterLocation?
     let profileImageName: String?
@@ -21,7 +21,7 @@ struct AvatarModel: Hashable {
     init(
         avatarId: String,
         name: String? = nil,
-        characterOption: CategoryOption? = nil,
+        characterOption: CharacterOption? = nil,
         characterAction: CharacterAction? = nil,
         characterLocation: CharacterLocation? = nil,
         profileImageName: String? = nil,
@@ -92,11 +92,11 @@ struct AvatarModel: Hashable {
 }
 
 struct AvatarDescriptionBuilder {
-    let characterOption: CategoryOption
+    let characterOption: CharacterOption
     let characterAction: CharacterAction
     let characterLocation: CharacterLocation
 
-    init(characterOption: CategoryOption, characterAction: CharacterAction, characterLocation: CharacterLocation) {
+    init(characterOption: CharacterOption, characterAction: CharacterAction, characterLocation: CharacterLocation) {
         self.characterOption = characterOption
         self.characterAction = characterAction
         self.characterLocation = characterLocation
@@ -114,7 +114,7 @@ struct AvatarDescriptionBuilder {
     
 }
 
-enum CategoryOption: String {
+enum CharacterOption: String, CaseIterable, Hashable {
     case man, woman, alien, cat, dog
     
     static var defaultValue: Self {

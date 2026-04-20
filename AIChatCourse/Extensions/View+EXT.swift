@@ -23,4 +23,20 @@ extension View {
         self
             .background(Color.black.opacity(0.0001))
     }
+    
+    func removeListRowFormatting() -> some View {
+        self
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowBackground(Color.clear)
+    }
+    
+    func addingBackgroundGradientForText() -> some View {
+        background(
+            LinearGradient(colors: [
+                Color.black.opacity(0),
+                Color.black.opacity(0.3),
+                Color.black.opacity(0.5)
+            ], startPoint: .top, endPoint: .bottom)
+        )
+    }
 }
