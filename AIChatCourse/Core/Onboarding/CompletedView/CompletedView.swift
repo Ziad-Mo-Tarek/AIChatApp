@@ -44,19 +44,19 @@ struct CompletedView: View {
     }
     
     var ctaButton: some View {
-        Button {
-            onComplete()
-        } label: {
-            ZStack {
-                if isCompletingProfileSetup {
-                    ProgressView()
-                } else {
-                    Text("Finish")
-                }
+        ZStack {
+            if isCompletingProfileSetup {
+                ProgressView()
+            } else {
+                Text("Finish")
             }
-            .callToActionButton()
+        }
+        .callToActionButton()
+        .anyButton(.press) {
+            onComplete()
         }
         .disabled(isCompletingProfileSetup)
+        
     }
     
 }
