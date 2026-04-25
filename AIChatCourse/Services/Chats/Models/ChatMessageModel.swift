@@ -32,6 +32,11 @@ struct ChatMessageModel: Identifiable {
         self.dateCreated = dateCreated
     }
     
+    func hasBeenSeenBy(userId: String) -> Bool {
+        guard let seenByIds else { return false }
+        return seenByIds.contains(userId)
+    }
+    
     static var mock: ChatMessageModel {
         mocks[0]
     }
