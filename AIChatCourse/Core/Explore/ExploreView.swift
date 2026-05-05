@@ -7,22 +7,35 @@
 
 import SwiftUI
 
+enum NaviagtionPathOptions: Hashable {
+    case chatView(avatarId: String)
+    case category(category: CharacterOption, imageName: String)
+}
+
 struct ExploreView: View {
     let avatar: AvatarModel = AvatarModel.mock
     @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
     @State private var categories: [CharacterOption] = CharacterOption.allCases
     @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
     
+    @State private var path: [NaviagtionPathOptions] = []
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 featuredView
                 categorySection
                 popularSection
-                
-                
             }
             .navigationTitle("Explore")
+            .navigationDestination(for: NaviagtionPathOptions.self) { newValue in
+                switch newValue {
+                case .chatView(avatarId: let avatarId):
+                    ChatView(avatarId: avatarId)
+                case .category(category: let category, let imageName):
+                    CategoryListView(category: category, imageName: imageName)
+                }
+            }
         }
         
     }
@@ -37,7 +50,7 @@ struct ExploreView: View {
                         imageName: avatar.profileImageName
                     )
                     .anyButton {
-                        
+                        onFeaturePressed(avatar: avatar)
                     }
                 }
             }
@@ -52,10 +65,16 @@ struct ExploreView: View {
             ScrollView(.horizontal) {
                 HStack(alignment: .center, spacing: 12) {
                     ForEach(categories, id: \.self) { cat in
-                        CategoryCell(title: cat.plural.capitalized, imageName: Constants.randomeImage)
-                            .anyButton {
-                                
-                            }
+                        let imageName = popularAvatars.first(where: { $0.characterOption == cat })?.profileImageName
+                        if let imageName {
+                            CategoryCell(title: cat.plural.capitalized, imageName: Constants.randomeImage)
+                                .anyButton {
+                                    onCategoryPressed(
+                                        category: cat,
+                                        imageName: imageName
+                                    )
+                                }
+                        }
                     }
                 }
             }
@@ -79,7 +98,7 @@ struct ExploreView: View {
                     subtitle: avatar.characterDescription
                 )
                 .anyButton(.highlight, action: {
-                    
+                    onFeaturePressed(avatar: avatar)
                 })
                 .removeListRowFormatting()
             }
@@ -87,9 +106,20 @@ struct ExploreView: View {
             Text("Popular")
         }
     }
+    
+    private func onFeaturePressed(avatar: AvatarModel) {
+        path.append(.chatView(avatarId: avatar.avatarId))
+    }
+    
+    private func onCategoryPressed(category: CharacterOption, imageName: String) {
+        path.append(.category(category: category, imageName: imageName))
+    }
+    
 }
 
 
 #Preview {
-    ExploreView()
+    NavigationStack {
+        ExploreView()
+    }
 }

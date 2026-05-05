@@ -38,5 +38,7 @@ struct ChatsView: View {
 }
 
 #Preview {
-    ChatsView()
+    NavigationStack {
+        ChatsView()
+    }
 }
