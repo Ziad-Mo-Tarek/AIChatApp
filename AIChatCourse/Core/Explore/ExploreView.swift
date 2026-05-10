@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum NaviagtionPathOptions: Hashable {
-    case chatView(avatarId: String)
-    case category(category: CharacterOption, imageName: String)
-}
-
 struct ExploreView: View {
     let avatar: AvatarModel = AvatarModel.mock
     @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
@@ -28,14 +23,7 @@ struct ExploreView: View {
                 popularSection
             }
             .navigationTitle("Explore")
-            .navigationDestination(for: NaviagtionPathOptions.self) { newValue in
-                switch newValue {
-                case .chatView(avatarId: let avatarId):
-                    ChatView(avatarId: avatarId)
-                case .category(category: let category, let imageName):
-                    CategoryListView(category: category, imageName: imageName)
-                }
-            }
+            .navigationDestinationForCoreModeule(path: $path)
         }
         
     }
