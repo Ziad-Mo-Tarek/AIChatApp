@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AppView: View {
+    @Environment(\.authService) var authService
     @State var appState: AppState = .init()
     
     var body: some View {
@@ -21,6 +22,17 @@ struct AppView: View {
             }
         )
         .environment(appState)
+        .task {
+            await checkUserStatus()
+        }
+    }
+    
+    private func checkUserStatus() async {
+        if let user = authService.getAuthenticatedUser() {
+            
+        } else {
+            
+        }
     }
 }
 
