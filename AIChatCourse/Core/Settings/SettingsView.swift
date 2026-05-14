@@ -10,10 +10,13 @@ import SwiftfulUtilities
 
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.authService) var authService
     @Environment(AppState.self) var appState
     @State var isPremium: Bool = true
     @State var isAnonymous: Bool = true
     @State var ShowCreateAccountSheet: Bool = false
+    @State var showAlert: AnyAppAlert?
+    
     var body: some View {
         NavigationStack {
             List {
@@ -24,26 +27,23 @@ struct SettingsView: View {
                 
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $ShowCreateAccountSheet) {
+            .sheet(isPresented: $ShowCreateAccountSheet, onDismiss: {
+                setAnonymousAccountStatus()
+            }, content: {
                 CreateAccountView()
                     .presentationDetents([.medium])
+            })
+            .onAppear {
+                setAnonymousAccountStatus()
             }
-        }
-    }
-    
-    func onSignOutPressed(){
-        // some logic
-        dismiss()
-        Task {
-            try? await Task.sleep(for: .seconds(1))
-            appState.updateShowTabBar(false)
+            .showCustomAlert(alert: $showAlert)
         }
     }
     
     private var accountSection: some View {
         Section {
             if isAnonymous {
-                Text("Save and backuo data")
+                Text("Save and backup data")
                     .rowFormatting()
                     .anyButton(.highlight){
                         onCreateAccountPressed()
@@ -53,7 +53,7 @@ struct SettingsView: View {
                 Text("Sign out")
                     .rowFormatting()
                     .anyButton(.highlight){
-                        
+                        onSignOutPressed()
                     }
                     .removeListRowFormatting()
             }
@@ -136,9 +136,56 @@ struct SettingsView: View {
         }
     }
     
+    func setAnonymousAccountStatus() {
+        isAnonymous = authService.getAuthenticatedUser()?.isAnonymous == true
+    }
+    
     func onCreateAccountPressed() {
         ShowCreateAccountSheet = true
     }
+    
+    func onSignOutPressed() {
+        Task {
+            do {
+                try authService.signOut()
+                await dismissScreen()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
+    }
+    
+    func dismissScreen() async {
+        dismiss()
+        try? await Task.sleep(for: .seconds(1))
+        appState.updateShowTabBar(false)
+    }
+    
+    func onDeletePressed() {
+        showAlert = AnyAppAlert(
+            title: "Delete Account",
+            subtitle: "This action cannot be undone. Are you sure you want to delete your account?",
+            buttons: {
+                AnyView(
+                    Button("Delete", role: .destructive, action: {
+                        onDeleteAccountConfirmed()
+                    })
+                )
+            }
+        )
+    }
+    
+    func onDeleteAccountConfirmed() {
+        Task {
+            do {
+                try await authService.deleteUser()
+                await dismissScreen()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
+    }
+    
 }
 
 #Preview {
