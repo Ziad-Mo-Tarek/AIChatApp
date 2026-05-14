@@ -29,7 +29,7 @@ struct WelcomeView: View {
                 title: "Sign in",
                 subTitle: "Connect to an existing account",
                 onDidSignIn: { isNewUser in
-                    handleDidSignIn(isNewUser: didSignIn)
+                    handleDidSignIn(isNewUser: isNewUser)
                 }
             )
             .presentationDetents([.medium])
