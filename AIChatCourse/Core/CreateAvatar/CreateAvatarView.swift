@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CreateAvatarView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.authService) private var authService
+    @Environment(AuthManager.self) private var authManager
     @State private var avatarName: String = ""
     @State private var characterOption: CharacterOption = .defaultValue
     @State private var characterAction: CharacterAction = .defaultValue

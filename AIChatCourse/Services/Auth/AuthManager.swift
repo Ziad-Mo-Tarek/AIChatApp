@@ -1,0 +1,66 @@
+//
+//  AuthManager.swift
+//  AIChatCourse
+//
+//  Created by Systemira's mac mini on 17/05/2026.
+//
+
+import Foundation
+import SwiftUI
+
+
+@Observable
+@MainActor
+class AuthManager {
+    
+    private let service: AuthService
+    private(set) var auth: UserAuthInfo?
+    private var listener: (any NSObjectProtocol)?
+    
+    init(service: AuthService) {
+        self.service = service
+        self.auth = service.getAuthenticatedUser()
+        self.addAuthListener()
+    }
+    
+    func addAuthListener() {
+        Task {
+            for await value in service.addAuthenticatedUserListener(onListenerAttached: { listener in
+                self.listener = listener
+            }) {
+                self.auth = value
+                print("Auth listener updated to: \(value?.uid ?? "no uid")")
+            }
+        }
+    }
+    
+    func getAuthId() throws -> String {
+        guard let uid = auth?.uid else {
+            throw AuthError.notSignedIn
+        }
+        return uid
+    }
+    
+    func signInAnonymously() async throws -> (user: UserAuthInfo, isNewUser: Bool) {
+        try await service.signInAnonymously()
+    }
+    
+    func signInWithApple() async throws -> (user: UserAuthInfo, isNewUser: Bool) {
+        try await service.signInWithApple()
+    }
+    
+    func signOut() throws {
+        try service.signOut()
+        auth = nil
+    }
+    
+    func deleteUser() async throws {
+        try await service.deleteUser()
+        auth = nil
+    }
+    
+    enum AuthError: LocalizedError {
+        case notSignedIn
+    }
+    
+}
