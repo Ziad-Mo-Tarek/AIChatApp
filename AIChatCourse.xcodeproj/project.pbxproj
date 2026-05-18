@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A5D4F732FB5C63B0078B736 /* SignInAppleAsync in Frameworks */ = {isa = PBXBuildFile; productRef = 0A5D4F722FB5C63B0078B736 /* SignInAppleAsync */; };
+		0A662A582FBB14EF00133BB5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0A662A572FBB14EF00133BB5 /* FirebaseFirestore */; };
 		0AAFD61E2FB1CB9600D68A20 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0AAFD61D2FB1CB9600D68A20 /* FirebaseAuth */; };
 		2F5F9AB12F8B8DA300913F9A /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2F5F9AB02F8B8DA300913F9A /* SDWebImageSwiftUI */; };
 		2FB2943E2FA0B8FF00EC7E7E /* SwiftfulUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = 2FB2943D2FA0B8FF00EC7E7E /* SwiftfulUtilities */; };
@@ -62,6 +63,7 @@
 				0A5D4F732FB5C63B0078B736 /* SignInAppleAsync in Frameworks */,
 				2F5F9AB12F8B8DA300913F9A /* SDWebImageSwiftUI in Frameworks */,
 				0AAFD61E2FB1CB9600D68A20 /* FirebaseAuth in Frameworks */,
+				0A662A582FBB14EF00133BB5 /* FirebaseFirestore in Frameworks */,
 				2FB2943E2FA0B8FF00EC7E7E /* SwiftfulUtilities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,12 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A662A562FBB14EF00133BB5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2F466E6A2F8262E8004B09CB = {
 			isa = PBXGroup;
 			children = (
 				2F466E752F8262E8004B09CB /* AIChatCourse */,
 				2F466E832F8262EA004B09CB /* AIChatCourseTests */,
 				2F466E8D2F8262EA004B09CB /* AIChatCourseUITests */,
+				0A662A562FBB14EF00133BB5 /* Frameworks */,
 				2F466E742F8262E8004B09CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -128,6 +138,7 @@
 				2FB2943D2FA0B8FF00EC7E7E /* SwiftfulUtilities */,
 				0AAFD61D2FB1CB9600D68A20 /* FirebaseAuth */,
 				0A5D4F722FB5C63B0078B736 /* SignInAppleAsync */,
+				0A662A572FBB14EF00133BB5 /* FirebaseFirestore */,
 			);
 			productName = AIChatCourse;
 			productReference = 2F466E732F8262E8004B09CB /* AIChatCourse.app */;
@@ -681,6 +692,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A5D4F712FB5C63B0078B736 /* XCRemoteSwiftPackageReference "SignInAppleAsync" */;
 			productName = SignInAppleAsync;
+		};
+		0A662A572FBB14EF00133BB5 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0AAFD61C2FB1CB9600D68A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 		0AAFD61D2FB1CB9600D68A20 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

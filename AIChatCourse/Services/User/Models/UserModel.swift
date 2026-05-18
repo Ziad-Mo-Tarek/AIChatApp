@@ -8,22 +8,56 @@
 import Foundation
 import SwiftUI
 
-struct UserModel {
-    let id: String
-    let dateCreated: Date?
-    let didCompleteOnBoarding: Bool
+struct UserModel: Codable {
+    let userId: String
+    let email: String?
+    let isAnonymous: Bool?
+    let creationDate: Date?
+    let creationVersion: String?
+    let lastSignInDate: Date?
+    let didCompleteOnBoarding: Bool?
     let profileColorHex: String?
     
     init(
-        id: String,
-        dateCreated: Date? = nil,
-        didCompleteOnBoarding: Bool,
+        userId: String,
+        email: String? = nil,
+        isAnonymous: Bool? = nil,
+        creationDate: Date? = nil,
+        creationVersion: String? = nil,
+        lastSignInDate: Date? = nil,
+        didCompleteOnBoarding: Bool? = nil,
         profileColorHex: String? = nil
     ) {
-        self.id = id
-        self.dateCreated = dateCreated
+        self.userId = userId
+        self.email = email
+        self.isAnonymous = isAnonymous
+        self.creationDate = creationDate
+        self.creationVersion = creationVersion
+        self.lastSignInDate = lastSignInDate
         self.didCompleteOnBoarding = didCompleteOnBoarding
         self.profileColorHex = profileColorHex
+    }
+    
+    init(auth: UserAuthInfo, creationVersion: String?){
+        self.init(
+            userId: auth.uid,
+            email: auth.email,
+            isAnonymous: auth.isAnonymous,
+            creationDate: auth.creationDate,
+            creationVersion: creationVersion,
+            lastSignInDate: auth.lastSignInDate
+        )
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case email
+        case isAnonymous = "is_anonymous"
+        case creationDate = "creation_date"
+        case creationVersion = "creation_version"
+        case lastSignInDate = "last_sign_in_date"
+        case didCompleteOnBoarding = "did_complete_onboarding"
+        case profileColorHex = "profile_color_hex"
     }
     
     var profileColorCalculated: Color {
@@ -40,26 +74,26 @@ struct UserModel {
     
     static var mocks: [UserModel] = [
         UserModel(
-            id: "user_1",
-            dateCreated: Date(),
+            userId: "user_1",
+            creationDate: Date(),
             didCompleteOnBoarding: true,
             profileColorHex: "#FF3B30"
         ),
         UserModel(
-            id: "user_2",
-            dateCreated: Date().adding(days: -1),
+            userId: "user_2",
+            creationDate: Date().adding(days: -1),
             didCompleteOnBoarding: false,
             profileColorHex: "#007AFF"
         ),
         UserModel(
-            id: "user_3",
-            dateCreated: Date().adding(days: -2),
+            userId: "user_3",
+            creationDate: Date().adding(days: -2),
             didCompleteOnBoarding: true,
             profileColorHex: "#34C759"
         ),
         UserModel(
-            id: "user_4",
-            dateCreated: Date().adding(days: -3),
+            userId: "user_4",
+            creationDate: Date().adding(days: -3),
             didCompleteOnBoarding: false,
             profileColorHex: nil
         )
