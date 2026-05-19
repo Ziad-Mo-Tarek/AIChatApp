@@ -11,6 +11,7 @@ import SwiftfulUtilities
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(AuthManager.self) private var authManager
+    @Environment(UserManager.self) private var userManager
     @Environment(AppState.self) var appState
     @State var isPremium: Bool = true
     @State var isAnonymous: Bool = true
@@ -148,6 +149,7 @@ struct SettingsView: View {
         Task {
             do {
                 try authManager.signOut()
+                userManager.signOut()
                 await dismissScreen()
             } catch {
                 showAlert = AnyAppAlert(error: error)
@@ -179,6 +181,7 @@ struct SettingsView: View {
         Task {
             do {
                 try await authManager.deleteUser()
+                try await userManager.deleteCurrentUser()
                 await dismissScreen()
             } catch {
                 showAlert = AnyAppAlert(error: error)
@@ -191,18 +194,21 @@ struct SettingsView: View {
 #Preview("No auth"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: nil)))
+        .environment(UserManager(service: MockUserService(currentUser: nil)))
         .environment(AppState())
 }
 
 #Preview("Not anonymous"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: UserAuthInfo.mock(isAnonymous: true))))
+        .environment(UserManager(service: MockUserService(currentUser: .mock)))
         .environment(AppState())
 }
 
 #Preview("Anonymous"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: UserAuthInfo.mock(isAnonymous: false))))
+        .environment(UserManager(service: MockUserService(currentUser: .mock)))
         .environment(AppState())
 }
 
