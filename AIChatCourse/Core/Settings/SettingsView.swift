@@ -194,21 +194,21 @@ struct SettingsView: View {
 #Preview("No auth"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: nil)))
-        .environment(UserManager(service: MockUserService(currentUser: nil)))
+        .environment(UserManager(services: MockUserServices(user: nil)))
         .environment(AppState())
 }
 
 #Preview("Not anonymous"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: UserAuthInfo.mock(isAnonymous: true))))
-        .environment(UserManager(service: MockUserService(currentUser: .mock)))
+        .environment(UserManager(services: MockUserServices(user: .mock)))
         .environment(AppState())
 }
 
 #Preview("Anonymous"){
     SettingsView()
         .environment(AuthManager(service: MockAuthService(currentUser: UserAuthInfo.mock(isAnonymous: false))))
-        .environment(UserManager(service: MockUserService(currentUser: .mock)))
+        .environment(UserManager(services: MockUserServices(user: .mock)))
         .environment(AppState())
 }
 

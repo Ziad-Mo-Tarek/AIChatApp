@@ -59,6 +59,6 @@ struct CompletedView: View {
     NavigationStack {
         CompletedView()
     }
-    .environment(UserManager(service: MockUserService()))
+    .environment(UserManager(services: MockUserServices(user: .mock)))
     .environment(AppState())
 }
